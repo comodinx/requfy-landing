@@ -34,18 +34,35 @@ const ICONS = {
 const APPLE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>';
 const PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 5 3.5z"/></svg>';
 
+// Se ejecuta en <head>, antes de la hoja de estilos, para que el tema elegido se aplique antes del primer pintado.
+const THEME_BOOT = `<script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('requfy-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t)}catch(e){}})()</script>`;
+const THEME_ICONS = {
+  system: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>',
+  light: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+  dark: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+};
+function themeSwitch(ui) {
+  const labels = { system: ui.themeSystem, light: ui.themeLight, dark: ui.themeDark };
+  const radios = Object.keys(THEME_ICONS).map((v) =>
+    `<button type="button" role="radio" aria-checked="${v === 'system'}" aria-label="${esc(labels[v])}" data-theme-value="${v}" tabindex="${v === 'system' ? 0 : -1}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${THEME_ICONS[v]}</svg></button>`).join('');
+  return `<div class="theme-switch" role="radiogroup" aria-label="${esc(ui.themeLabel)}">${radios}</div>`;
+}
+
 const wordmark = readFileSync(ROOT + 'static/wordmark.svg', 'utf8')
   .replace(/<svg[^>]*>/, (m) => m.replace(/\s(width|height)="[^"]*"/g, '').replace('<svg', '<svg focusable="false"'))
   .trim();
 
 const hasEmail = CONTACT_EMAIL.includes('@');
-const emailHtml = hasEmail ? `<a href="mailto:${esc(CONTACT_EMAIL)}">${esc(CONTACT_EMAIL)}</a>` : esc(CONTACT_EMAIL);
+const mailLink = (subject) => hasEmail
+  ? `<a href="mailto:${esc(CONTACT_EMAIL)}${subject ? `?subject=${encodeURIComponent(subject)}` : ''}">${esc(CONTACT_EMAIL)}</a>`
+  : esc(CONTACT_EMAIL);
+const emailHtml = mailLink();
 
 function paragraph(text, c, fromDir) {
   if (text === '{deleteLink}') {
     return `<p><a href="${rel(fromDir, dirOf(c.lang, 'delete'))}">${esc(c.ui.deleteAccount)}</a></p>`;
   }
-  const body = esc(text).replace('{email}', emailHtml).replace('{emailInline}', emailHtml);
+  const body = esc(text).replace('{email}', emailHtml).replace('{emailInline}', mailLink(c.ui.deleteSubject));
   return `<p>${body}</p>`;
 }
 
@@ -79,10 +96,12 @@ ${SITE_URL ? `<link rel="canonical" href="${esc(abs(dirOf(c.lang, key)))}">\n<me
 <meta name="theme-color" content="#0C0D11" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="${asset('app-icon.svg')}">
 <link rel="apple-touch-icon" href="${asset('apple-touch-icon.png')}">
+${THEME_BOOT}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONT}">
-<link rel="stylesheet" href="${asset('style.css')}">`;
+<link rel="stylesheet" href="${asset('style.css')}">
+<script src="${asset('theme.js')}" defer></script>`;
 }
 
 function nav(c, fromDir, key) {
@@ -99,7 +118,10 @@ function nav(c, fromDir, key) {
       <a href="${rel(fromDir, dirOf(c.lang, 'privacy'))}">${esc(c.ui.privacy)}</a>
       <a href="${rel(fromDir, dirOf(c.lang, 'support'))}">${esc(c.ui.support)}</a>
     </nav>
+    <div class="nav-tools">
+    ${themeSwitch(c.ui)}
     <div class="lang-pill" role="group" aria-label="${esc(c.ui.langLabel)}">${pill}</div>
+    </div>
   </div>
 </header>`;
 }
@@ -232,11 +254,18 @@ function notFound() {
 <title>404 — requfy</title>
 <meta name="description" content="Página no encontrada / Page not found.">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#F2F3F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C0D11" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="assets/app-icon.svg">
+${THEME_BOOT}
 <link rel="stylesheet" href="${FONT}">
 <style>${readFileSync(ROOT + 'static/style.css', 'utf8')}</style>
+<script src="assets/theme.js" defer></script>
 </head>
 <body>
+<header class="wrap nav nav-end">
+  <div class="nav-tools" lang="es">${themeSwitch({ themeLabel: 'Tema / Theme', themeSystem: 'Sistema / System', themeLight: 'Claro / Light', themeDark: 'Oscuro / Dark' })}</div>
+</header>
 <main class="center">
   <h1>404</h1>
   <p lang="es">${esc(es.ui.notFoundText)}</p>

@@ -19,10 +19,12 @@
 <meta name="theme-color" content="#0C0D11" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="../../assets/app-icon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('requfy-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t)}catch(e){}})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../../assets/style.css">
+<script src="../../assets/theme.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#contenido">Skip to content</a>
@@ -41,7 +43,10 @@
       <a href="../privacy/">Privacy</a>
       <a href="../support/">Support</a>
     </nav>
+    <div class="nav-tools">
+    <div class="theme-switch" role="radiogroup" aria-label="Theme"><button type="button" role="radio" aria-checked="true" aria-label="Use the system theme" data-theme-value="system" tabindex="0"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></button><button type="button" role="radio" aria-checked="false" aria-label="Light theme" data-theme-value="light" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button><button type="button" role="radio" aria-checked="false" aria-label="Dark theme" data-theme-value="dark" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button></div>
     <div class="lang-pill" role="group" aria-label="Language"><a href="../../es/terminos/" lang="es" hreflang="es">ES</a><span aria-hidden="true">·</span><a href="./" lang="en" hreflang="en" aria-current="true">EN</a></div>
+    </div>
   </div>
 </header>
 <main id="contenido">
@@ -84,7 +89,7 @@
   </section>
   <section>
     <h2>Contact</h2>
-    <p>[PENDIENTE: email de contacto]</p>
+    <p><a href="mailto:developer.requfy@gmail.com">developer.requfy@gmail.com</a></p>
   </section>
 </article>
 </main>

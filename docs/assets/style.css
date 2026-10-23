@@ -6,8 +6,17 @@
   --pad: 24px;
   color-scheme: light dark;
 }
+:root[data-theme="light"] { color-scheme: light; }
+/* Tokens oscuros: sin atributo manda el sistema; con data-theme manda la elección. */
+:root[data-theme="dark"] {
+  --bg-base: #0C0D11; --bg-surface: #16181E; --bg-surface-alt: #1F222A;
+  --border: #282C36; --text: #F2F3F7; --text-2: #A2A8B6; --text-muted: #7D8393;
+  --accent: #818CF8; --on-accent: #0C0D11; --accent-text: #A5B4FC; --accent-soft: #23254A;
+  --bezel: #282C36;
+  color-scheme: dark;
+}
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg-base: #0C0D11; --bg-surface: #16181E; --bg-surface-alt: #1F222A;
     --border: #282C36; --text: #F2F3F7; --text-2: #A2A8B6; --text-muted: #7D8393;
     --accent: #818CF8; --on-accent: #0C0D11; --accent-text: #A5B4FC; --accent-soft: #23254A;
@@ -34,10 +43,19 @@ a { color: var(--accent-text); }
 .logo { display: inline-flex; color: var(--text); }
 .logo svg { height: 32px; width: auto; display: block; }
 .nav-right { display: flex; align-items: center; gap: 32px; }
+.nav-tools { display: flex; align-items: center; gap: 10px; }
+.nav-end { justify-content: flex-end; }
+.theme-switch { display: none; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--border); border-radius: 999px; }
+.js .theme-switch { display: inline-flex; }
+.theme-switch button { width: 32px; height: 32px; border: 0; border-radius: 50%; padding: 0; background: transparent; color: var(--text-2); display: grid; place-items: center; cursor: pointer; }
+.theme-switch button:hover { color: var(--text); }
+.theme-switch button[aria-checked="true"] { background: var(--accent-soft); color: var(--accent-text); }
+.theme-switch svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@media (min-width: 640px) { .nav-tools { gap: 16px; } .lang-pill { padding: 6px 14px; } }
 .nav-links { display: none; gap: 32px; }
 .nav-links a { color: var(--text-2); font-size: 16px; font-weight: 600; text-decoration: none; }
 .nav-links a:hover { color: var(--text); }
-.lang-pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; font-size: 15px; font-weight: 600; }
+.lang-pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 15px; font-weight: 600; }
 .lang-pill a, .lang-pill span { text-decoration: none; }
 .lang-pill [aria-current] { color: var(--text); font-weight: 800; }
 .lang-pill a:not([aria-current]) { color: var(--text-muted); }
@@ -57,16 +75,24 @@ h1, h2, h3 { margin: 0; }
 .store[aria-disabled="true"] { cursor: default; }
 a.store:hover { opacity: .9; }
 .hero .note { margin: 20px 0 0; font-size: 15px; color: var(--text-muted); }
-.phones { display: flex; justify-content: center; align-items: flex-start; }
-.phone { width: 240px; margin: 0; border: 8px solid var(--bezel); border-radius: 13%/6%; background: var(--bezel); overflow: hidden; box-shadow: 0 24px 48px -16px rgba(18,20,27,.35), 0 8px 16px -8px rgba(18,20,27,.2); }
+.phones { display: flex; justify-content: center; align-items: flex-start; gap: 28px; }
+.phone { width: 240px; margin: 0; flex: none; border: 8px solid var(--bezel); border-radius: 13%/6%; background: var(--bezel); box-shadow: 0 24px 48px -16px rgba(18,20,27,.35), 0 8px 16px -8px rgba(18,20,27,.2); }
 .phone img { display: block; width: 100%; height: auto; border-radius: 12% / 5.5%; }
 .phone.second { display: none; }
+@media (min-width: 640px) {
+  .phone { width: 280px; }
+  .phone.second { display: block; margin-top: 72px; }
+  .phones { padding-bottom: 24px; }
+}
 @media (min-width: 900px) {
-  .hero { grid-template-columns: 1fr auto; gap: 64px; padding-top: 48px; padding-bottom: 96px; }
+  .hero { padding-top: 48px; padding-bottom: 96px; }
   .hero h1 { font-size: 60px; line-height: 66px; }
   .hero .sub { font-size: 21px; line-height: 32px; }
-  .phone { width: 300px; }
-  .phone.second { display: block; margin-left: -48px; margin-top: 72px; }
+}
+/* Dos columnas solo cuando entran el texto y los dos teléfonos (588px) en los 1200px de contenido. */
+@media (min-width: 1360px) {
+  .hero { grid-template-columns: 1fr auto; gap: 64px; }
+  .phones { justify-content: flex-end; }
 }
 
 /* Features */

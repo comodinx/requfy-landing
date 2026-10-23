@@ -65,6 +65,16 @@ for (const f of html) {
     for (const m of src.matchAll(/<img\b[^>]*>/g)) if (!/\balt="/.test(m[0])) err(`${name}: img sin alt`);
   }
 
+  // Selector de tema: tres radios y el script de arranque en <head>, antes de la hoja de estilos.
+  if (top === 'es' || top === 'en' || name === '404.html') {
+    if (!/role="radiogroup"[^>]*aria-label="[^"]+"/.test(src)) err(`${name}: sin radiogroup del tema`);
+    if ((src.match(/role="radio"[^>]*aria-checked="(true|false)"[^>]*aria-label="[^"]+"/g) || []).length !== 3) err(`${name}: el selector de tema debe tener tres radios`);
+    const boot = src.indexOf("requfy-theme");
+    const css = src.search(/<link rel="stylesheet" href="[^"]*style\.css"|<style>/);
+    if (boot < 0 || boot > css || src.indexOf('<script>') > css) err(`${name}: falta el script de tema en <head> antes del CSS`);
+    if (!/<script src="[^"]*theme\.js" defer>/.test(src)) err(`${name}: sin theme.js`);
+  }
+
   // 4. Marcadores pendientes.
   const n = (src.match(/\[PENDIENTE/g) || []).length;
   if (n) {
@@ -72,7 +82,7 @@ for (const f of html) {
     (ok ? warnings : errors).push(`${name}: ${n} marcador(es) «[PENDIENTE» ${ok ? '(contacto, esperado)' : 'fuera de los lugares de contacto'}`);
   }
 }
-for (const f of ['.nojekyll', 'assets/style.css', 'assets/app-icon.svg', 'assets/apple-touch-icon.png', 'assets/app-icon-512.png', 'assets/home-600.png', 'assets/response-600.png']) {
+for (const f of ['.nojekyll', 'assets/style.css', 'assets/theme.js', 'assets/app-icon.svg', 'assets/apple-touch-icon.png', 'assets/app-icon-512.png', 'assets/home-600.png', 'assets/response-600.png']) {
   if (!existsSync(join(DOCS, f))) err(`Falta docs/${f}`);
 }
 

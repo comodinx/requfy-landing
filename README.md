@@ -18,6 +18,10 @@ npm run check   # verifica enlaces, idiomas y metadatos
 
 Los enlaces son relativos, así que el sitio funciona bajo un subpath (`/requfy-landing/`).
 
+## Selector de tema
+
+En la barra de navegación, antes del selector de idioma: Sistema, Claro y Oscuro (`role="radiogroup"`, con flechas del teclado). La elección se guarda en `localStorage` (`requfy-theme`: `system` | `light` | `dark`) y se aplica con `data-theme` en `<html>`; sin atributo manda `prefers-color-scheme`. Un script mínimo en `<head>`, antes del CSS, la aplica antes del primer pintado (sin parpadeo); `static/theme.js` maneja el selector y el `theme-color`. Sin JavaScript el sitio sigue al sistema y el selector queda oculto. La 404 trae el mismo selector.
+
 ## Publicar en GitHub Pages
 
 1. Crear el repo en GitHub y agregar el remoto (`git remote add origin ...`).
@@ -28,7 +32,7 @@ Los enlaces son relativos, así que el sitio funciona bajo un subpath (`/requfy-
 
 | Valor | Qué hace |
 |---|---|
-| `CONTACT_EMAIL` | Email de contacto en privacidad, términos, soporte y eliminar cuenta. Hoy es un marcador `[PENDIENTE…]` y se muestra como texto; con un `@` pasa a ser `mailto:` |
+| `CONTACT_EMAIL` | Email de contacto en privacidad, términos, soporte y eliminar cuenta, como enlace `mailto:` (ya está definido: `developer.requfy@gmail.com`). En «Eliminar cuenta» el enlace trae el asunto prellenado. Si vuelve a ser un texto sin `@`, se muestra como marcador `[PENDIENTE…]` |
 | `SITE_URL` | URL pública con barra final. Agrega `canonical`, `og:url` y `og:image` absoluto |
 | `APP_STORE_URL` / `PLAY_STORE_URL` | Con valor, los botones son enlaces; con `null` dicen «Próximamente» |
 

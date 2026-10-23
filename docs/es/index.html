@@ -19,10 +19,12 @@
 <meta name="theme-color" content="#0C0D11" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="../assets/app-icon.svg">
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<script>(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('requfy-theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t)}catch(e){}})()</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -41,7 +43,10 @@
       <a href="privacidad/">Privacidad</a>
       <a href="soporte/">Soporte</a>
     </nav>
+    <div class="nav-tools">
+    <div class="theme-switch" role="radiogroup" aria-label="Tema"><button type="button" role="radio" aria-checked="true" aria-label="Usar el tema del sistema" data-theme-value="system" tabindex="0"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></button><button type="button" role="radio" aria-checked="false" aria-label="Tema claro" data-theme-value="light" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></button><button type="button" role="radio" aria-checked="false" aria-label="Tema oscuro" data-theme-value="dark" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button></div>
     <div class="lang-pill" role="group" aria-label="Idioma"><a href="./" lang="es" hreflang="es" aria-current="true">ES</a><span aria-hidden="true">·</span><a href="../en/" lang="en" hreflang="en">EN</a></div>
+    </div>
   </div>
 </header>
 <main id="contenido">
@@ -66,7 +71,7 @@
   <ul class="grid">
     <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span><h3>Git sin conflictos</h3><p>Sincroniza con tu repo: requfy combina los cambios campo por campo y, si los dos lados tocaron lo mismo, gana lo que hiciste en el teléfono.</p></li>
     <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><h3>Formato Bruno</h3><p>Tus colecciones son archivos .bru en tu repo. Sigue editándolas con Bruno en la computadora.</p></li>
-    <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21s-4-3-4-9 4-9 4-9"/><path d="M16 3s4 3 4 9-4 9-4 9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span><h3>Entornos y secretas</h3><p>Cambia de servidor en un toque. Las variables secretas nunca se suben al repo.</p></li>
+    <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21s-4-3-4-9 4-9 4-9"/><path d="M16 3s4 3 4 9-4 9-4 9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></span><h3>Entornos y secretos</h3><p>Cambia de servidor en un toque. Las variables secretas nunca se suben al repo.</p></li>
     <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg></span><h3>Respuestas claras</h3><p>Status, tiempo y tamaño de un vistazo, el JSON en árbol y el historial de cada ejecución.</p></li>
     <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><h3>Variables encadenadas</h3><p>Toma un valor de una respuesta y úsalo en el siguiente request, o arma una URL con otras variables.</p></li>
     <li class="card"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><h3>Privado</h3><p>Sin anuncios ni rastreo. Tus requests van directo del teléfono a tus APIs.</p></li>
