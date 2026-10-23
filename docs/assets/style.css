@@ -36,7 +36,8 @@ a { color: var(--accent-text); }
 .skip { position: absolute; left: 16px; top: -100px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; border-radius: 999px; font-weight: 700; z-index: 10; }
 .skip:focus { top: 12px; }
 .wrap { max-width: 1200px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
-@media (min-width: 1024px) { :root { --pad: 120px; } .wrap { max-width: 1440px; } }
+/* El margen crece con la pantalla hasta los 120 de Figma (1500px o más), así 1024–1440 conserva espacio para el hero */
+@media (min-width: 1024px) { :root { --pad: clamp(64px, 8vw, 120px); } .wrap { max-width: 1440px; } }
 
 /* Nav */
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 24px; padding-bottom: 24px; }
@@ -89,10 +90,14 @@ a.store:hover { opacity: .9; }
   .hero h1 { font-size: 60px; line-height: 66px; }
   .hero .sub { font-size: 21px; line-height: 32px; }
 }
-/* Dos columnas solo cuando entran el texto y los dos teléfonos (588px) en los 1200px de contenido. */
-@media (min-width: 1360px) {
-  .hero { grid-template-columns: 1fr auto; gap: 64px; }
-  .phones { justify-content: flex-end; }
+/* Dos columnas desde 1024px, como en Figma: los teléfonos y el título escalan con el ancho (280px y 60px desde
+   ~1500px), así una notebook de 1280 ve el hero entero sin apilarlo */
+@media (min-width: 1024px) {
+  .hero { grid-template-columns: minmax(0, 1fr) auto; gap: clamp(32px, 4vw, 64px); }
+  .hero h1 { font-size: clamp(44px, 4.2vw, 60px); line-height: 1.1; }
+  .phones { justify-content: flex-end; gap: clamp(20px, 2vw, 28px); }
+  .phone { width: clamp(176px, 18.5vw, 280px); }
+  .phone.second { margin-top: clamp(48px, 5vw, 72px); }
 }
 
 /* Features */
