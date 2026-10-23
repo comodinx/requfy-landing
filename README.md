@@ -34,6 +34,7 @@ En la barra de navegación, antes del selector de idioma: Sistema, Claro y Oscur
 |---|---|
 | `CONTACT_EMAIL` | Email de contacto en privacidad, términos, soporte y eliminar cuenta, como enlace `mailto:` (ya está definido: `developer.requfy@gmail.com`). En «Eliminar cuenta» el enlace trae el asunto prellenado. Si vuelve a ser un texto sin `@`, se muestra como marcador `[PENDIENTE…]` |
 | `SITE_URL` | URL pública con barra final. Agrega `canonical`, `og:url` y `og:image` absoluto |
+| `CUSTOM_DOMAIN` | El dominio propio que sirve GitHub Pages (`requfy.app`). El build lo escribe en `docs/CNAME`: sin eso, cada build borraría el dominio de Pages. `null` para usar `github.io` |
 | `APP_STORE_URL` / `PLAY_STORE_URL` | Con valor, los botones son enlaces; con `null` dicen «Próximamente» |
 
 Después de cambiar algo: `npm run build`, `npm run check` y commitear `docs/`.

@@ -4,7 +4,7 @@ import { posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import es from './content/es.mjs';
 import en from './content/en.mjs';
-import { CONTACT_EMAIL, SITE_URL, APP_STORE_URL, PLAY_STORE_URL } from './site.config.mjs';
+import { CONTACT_EMAIL, SITE_URL, CUSTOM_DOMAIN, APP_STORE_URL, PLAY_STORE_URL } from './site.config.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUT = ROOT + 'docs';
@@ -281,6 +281,8 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 cpSync(ROOT + 'static', OUT + '/assets', { recursive: true });
 writeFileSync(OUT + '/.nojekyll', '');
+// GitHub Pages lee el dominio propio de docs/CNAME: el build borra docs/, así que lo vuelve a escribir
+if (CUSTOM_DOMAIN) writeFileSync(OUT + '/CNAME', CUSTOM_DOMAIN + '\n');
 write('index.html', rootIndex());
 for (const [lang, c] of Object.entries(LANGS)) {
   write(`${dirOf(lang, 'home')}index.html`, homePage(c));
