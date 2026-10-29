@@ -6,3 +6,7 @@ export const SITE_URL = 'https://requfy.app/'; // Dominio propio (con barra fina
 export const CUSTOM_DOMAIN = 'requfy.app';
 export const APP_STORE_URL = null;
 export const PLAY_STORE_URL = null;
+// Donaciones (solo en el sitio, nunca dentro de la app). Con null en las dos, no se genera
+// la página de apoyo ni su link en el pie; alcanza con que una tenga valor para que aparezca.
+export const CAFECITO_URL = null;
+export const GITHUB_SPONSORS_URL = null;

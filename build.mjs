@@ -4,12 +4,14 @@ import { posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import es from './content/es.mjs';
 import en from './content/en.mjs';
-import { CONTACT_EMAIL, SITE_URL, CUSTOM_DOMAIN, APP_STORE_URL, PLAY_STORE_URL } from './site.config.mjs';
+import { CONTACT_EMAIL, SITE_URL, CUSTOM_DOMAIN, APP_STORE_URL, PLAY_STORE_URL, CAFECITO_URL, GITHUB_SPONSORS_URL } from './site.config.mjs';
 
 const ROOT = fileURLToPath(new URL('.', import.meta.url));
 const OUT = ROOT + 'docs';
 const LANGS = { es, en };
 const PAGE_KEYS = ['privacy', 'terms', 'support', 'delete'];
+// La página de apoyo solo existe si hay al menos un link de donación configurado.
+const SPONSOR_ON = Boolean(CAFECITO_URL || GITHUB_SPONSORS_URL);
 const FONT = 'https://fonts.googleapis.com/css2?family=Fustat:wght@400;500;600;700;800&display=swap';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -135,7 +137,7 @@ function footer(c, fromDir, key) {
       <li><a href="${rel(fromDir, dirOf(c.lang, 'privacy'))}">${esc(c.ui.privacy)}</a></li>
       <li><a href="${rel(fromDir, dirOf(c.lang, 'terms'))}">${esc(c.ui.terms)}</a></li>
       <li><a href="${rel(fromDir, dirOf(c.lang, 'support'))}">${esc(c.ui.support)}</a></li>
-      <li><a href="${rel(fromDir, dirOf(c.lang, 'delete'))}">${esc(c.ui.deleteAccount)}</a></li>
+      <li><a href="${rel(fromDir, dirOf(c.lang, 'delete'))}">${esc(c.ui.deleteAccount)}</a></li>${SPONSOR_ON ? `\n      <li><a href="${rel(fromDir, dirOf(c.lang, 'sponsor'))}">${esc(c.ui.sponsor)}</a></li>` : ''}
       <li><a class="lang" href="${rel(fromDir, dirOf(other, key))}" lang="${other}" hreflang="${other}">${esc(c.ui.otherLang)}</a></li>
     </ul></nav>
   </div>
@@ -206,6 +208,30 @@ function legalPage(c, key) {
 ${p.sections.map((s) => `  <section>\n    <h2>${esc(s.h)}</h2>\n    ${s.p.map((t) => paragraph(t, c, fromDir)).join('\n    ')}\n  </section>`).join('\n')}
 </article>`;
   return shell(c, key, { title: p.title, description: p.description }, main);
+}
+
+// Página de apoyo: mismo layout que las legales, más un botón por cada link configurado.
+function sponsorPage(c) {
+  const p = c.pages.sponsor;
+  const fromDir = dirOf(c.lang, 'sponsor');
+  const button = (href, t) => href
+    ? `\n      <li><a class="store" href="${esc(href)}" target="_blank" rel="noopener"><span>${esc(t.label)}</span></a><p>${esc(t.note)}</p></li>`
+    : '';
+  const main = `<article class="legal">
+  <a class="back" href="${rel(fromDir, dirOf(c.lang, 'home'))}">${esc(c.ui.back)}</a>
+  <h1>${esc(p.h1)}</h1>
+  <section>
+    <h2>${esc(p.intro.h)}</h2>
+    ${p.intro.p.map((t) => `<p>${esc(t)}</p>`).join('\n    ')}
+  </section>
+  <section>
+    <h2>${esc(p.waysTitle)}</h2>
+    <ul class="stores" style="list-style:none;padding:0;margin:16px 0 0">${button(CAFECITO_URL, p.cafecito)}${button(GITHUB_SPONSORS_URL, p.github)}
+    </ul>
+    <p>${esc(p.processorNote)}</p>
+  </section>
+</article>`;
+  return shell(c, 'sponsor', { title: p.title, description: p.description }, main);
 }
 
 function write(path, data) {
@@ -287,6 +313,7 @@ write('index.html', rootIndex());
 for (const [lang, c] of Object.entries(LANGS)) {
   write(`${dirOf(lang, 'home')}index.html`, homePage(c));
   for (const k of PAGE_KEYS) write(`${dirOf(lang, k)}index.html`, legalPage(c, k));
+  if (SPONSOR_ON) write(`${dirOf(lang, 'sponsor')}index.html`, sponsorPage(c));
 }
 write('404.html', notFound());
 
@@ -295,5 +322,6 @@ if (!hasEmail) pending.push('CONTACT_EMAIL');
 if (!SITE_URL) pending.push('SITE_URL');
 if (!APP_STORE_URL) pending.push('APP_STORE_URL');
 if (!PLAY_STORE_URL) pending.push('PLAY_STORE_URL');
-console.log(`Sitio generado en docs/ (${2 * (1 + PAGE_KEYS.length) + 2} páginas HTML).`);
+if (!SPONSOR_ON) pending.push('CAFECITO_URL / GITHUB_SPONSORS_URL (opcional: página de apoyo oculta)');
+console.log(`Sitio generado en docs/ (${2 * (1 + PAGE_KEYS.length + (SPONSOR_ON ? 1 : 0)) + 2} páginas HTML).`);
 if (pending.length) console.warn(`ADVERTENCIA: valores pendientes en site.config.mjs: ${pending.join(', ')}`);

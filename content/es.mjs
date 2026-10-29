@@ -11,6 +11,7 @@ export default {
     support: 'Soporte',
     terms: 'Términos',
     deleteAccount: 'Eliminar cuenta',
+    sponsor: 'Apoyar requfy',
     back: '← Volver al inicio',
     updated: 'Última actualización: 23 de octubre de 2026',
     langLabel: 'Idioma',
@@ -51,8 +52,19 @@ export default {
     brunoTitle: 'Compatible con Bruno',
     brunoBody: 'requfy lee y escribe colecciones en el formato de Bruno (archivos .bru). Es un proyecto independiente: Bruno es una marca de Anoop M D, y requfy no está afiliado a Bruno ni respaldado por Bruno.',
   },
-  slugs: { privacy: 'privacidad', terms: 'terminos', support: 'soporte', delete: 'eliminar-cuenta' },
+  slugs: { privacy: 'privacidad', terms: 'terminos', support: 'soporte', delete: 'eliminar-cuenta', sponsor: 'apoyar' },
   pages: {
+    // Solo se genera si hay un link de donación en site.config.mjs
+    sponsor: {
+      title: 'Apoyar requfy',
+      description: 'requfy es gratis y lo desarrolla una sola persona. Si te resulta útil, puedes apoyar su desarrollo con una donación voluntaria.',
+      h1: 'Apoyar requfy',
+      intro: { h: 'Gratis y hecha por una persona', p: ['requfy es gratis y la desarrolla una sola persona. Si te resulta útil, puedes apoyar su desarrollo.', 'Las donaciones son voluntarias y no desbloquean nada en la app.'] },
+      waysTitle: 'Cómo apoyar',
+      cafecito: { label: 'Invitar un cafecito', note: 'En pesos, desde Argentina.' },
+      github: { label: 'GitHub Sponsors', note: 'Desde cualquier país, en dólares.' },
+      processorNote: 'El pago lo procesa Cafecito o GitHub: requfy no recibe los datos de tu pago.',
+    },
     privacy: {
       title: 'Política de privacidad — requfy',
       description: 'Qué datos usa requfy, qué se queda en tu teléfono y cómo eliminar tu cuenta. Sin anuncios ni rastreo.',

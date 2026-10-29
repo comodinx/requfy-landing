@@ -4,8 +4,11 @@ import { posix, join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import es from './content/es.mjs';
 import en from './content/en.mjs';
+import { CAFECITO_URL, GITHUB_SPONSORS_URL } from './site.config.mjs';
 
 const DOCS = fileURLToPath(new URL('./docs', import.meta.url));
+// La página de apoyo solo existe con algún link de donación configurado.
+const SPONSOR_ON = Boolean(CAFECITO_URL || GITHUB_SPONSORS_URL);
 const errors = [];
 const warnings = [];
 const err = (m) => errors.push(m);
@@ -24,10 +27,11 @@ const relp = (f) => f.slice(DOCS.length + 1);
 const keys = (c) => Object.keys(c.pages).sort().join(',');
 if (keys(es) !== keys(en)) err(`Los idiomas tienen distintas páginas: es=${keys(es)} en=${keys(en)}`);
 for (const [l, c] of Object.entries({ es, en })) {
-  for (const k of ['', ...Object.values(c.slugs)]) {
+  for (const k of ['', ...Object.entries(c.slugs).filter(([key]) => key !== 'sponsor' || SPONSOR_ON).map(([, s]) => s)]) {
     const f = join(DOCS, l, k, 'index.html');
     if (!existsSync(f)) err(`Falta ${relp(f)}`);
   }
+  if (!SPONSOR_ON && existsSync(join(DOCS, l, c.slugs.sponsor))) err(`${l}: la página de apoyo no debería generarse sin links`);
   for (const k of Object.keys(c.pages)) if (!c.slugs[k]) err(`${l}: falta slug para ${k}`);
 }
 if (Object.keys(es.pages).length !== Object.keys(en.pages).length) err('Distinta cantidad de páginas legales');
@@ -73,6 +77,20 @@ for (const f of html) {
     const css = src.search(/<link rel="stylesheet" href="[^"]*style\.css"|<style>/);
     if (boot < 0 || boot > css || src.indexOf('<script>') > css) err(`${name}: falta el script de tema en <head> antes del CSS`);
     if (!/<script src="[^"]*theme\.js" defer>/.test(src)) err(`${name}: sin theme.js`);
+  }
+
+  // Apoyo: el link del pie solo existe con la página, y los botones son externos con rel="noopener".
+  if (top === 'es' || top === 'en') {
+    const slug = (top === 'es' ? es : en).slugs.sponsor;
+    // En la propia página de apoyo el link del pie es relativo a sí misma («./»)
+    const own = name === `${top}/${slug}/index.html`;
+    const footerLink = new RegExp(`<footer[\\s\\S]*href="${own ? '\\./' : `[^"]*${slug}/`}"`).test(src);
+    if (footerLink !== SPONSOR_ON) err(`${name}: el link de apoyo del pie ${SPONSOR_ON ? 'falta' : 'sobra'}`);
+    if (name === `${top}/${slug}/index.html`) {
+      const ext = [...src.matchAll(/<a class="store" href="https:[^>]*>/g)].map((m) => m[0]);
+      if (ext.length !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter(Boolean).length) err(`${name}: cantidad de botones de donación incorrecta`);
+      for (const a of ext) if (!/rel="noopener"/.test(a)) err(`${name}: botón externo sin rel="noopener"`);
+    }
   }
 
   // 4. Marcadores pendientes.

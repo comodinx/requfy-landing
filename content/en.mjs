@@ -10,6 +10,7 @@ export default {
     support: 'Support',
     terms: 'Terms',
     deleteAccount: 'Delete account',
+    sponsor: 'Sponsor',
     back: '← Back to home',
     updated: 'Last updated: October 23, 2026',
     langLabel: 'Language',
@@ -50,8 +51,18 @@ export default {
     brunoTitle: 'Bruno compatible',
     brunoBody: 'requfy reads and writes collections in the Bruno format (.bru files). It is an independent project: Bruno is a trademark of Anoop M D, and requfy is not affiliated with or endorsed by Bruno.',
   },
-  slugs: { privacy: 'privacy', terms: 'terms', support: 'support', delete: 'delete-account' },
+  slugs: { privacy: 'privacy', terms: 'terms', support: 'support', delete: 'delete-account', sponsor: 'sponsor' },
   pages: {
+    sponsor: {
+      title: 'Support requfy',
+      description: 'requfy is free and built by one person. If it is useful to you, you can support its development with a voluntary donation.',
+      h1: 'Support requfy',
+      intro: { h: 'Free and made by one person', p: ['requfy is free and made by one person. If it is useful to you, you can support its development.', "Donations are voluntary and don't unlock anything in the app."] },
+      waysTitle: 'How to support',
+      cafecito: { label: 'Buy me a cafecito', note: 'In pesos, from Argentina.' },
+      github: { label: 'GitHub Sponsors', note: 'From any country, in dollars.' },
+      processorNote: "The payment is processed by Cafecito or GitHub: requfy doesn't receive your payment details.",
+    },
     privacy: {
       title: 'Privacy policy — requfy',
       description: 'What data requfy uses, what stays on your phone and how to delete your account. No ads, no tracking.',
