@@ -90,10 +90,14 @@ for (const f of html) {
       const ext = [...src.matchAll(/<a class="store" href="https:[^>]*>/g)].map((m) => m[0]);
       if (ext.length !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter(Boolean).length) err(`${name}: cantidad de botones de donación incorrecta`);
       for (const a of ext) if (!/rel="noopener"/.test(a)) err(`${name}: botón externo sin rel="noopener"`);
-      // La página no nombra un medio de pago que no está configurado
-      const article = src.match(/<article[\s\S]*<\/article>/)?.[0] ?? '';
+      // Un medio sin link se muestra como «próximamente», sin link, como las tiendas
+      const soon = (src.match(/<span class="store" aria-disabled="true">/g) || []).length;
+      if (soon !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter((url) => !url).length) err(`${name}: cantidad de medios «próximamente» incorrecta`);
+      // La nota del pago no nombra un medio que no tiene link
+      const note = src.match(/<\/ul>\s*<p>([^<]*)<\/p>/)?.[1] ?? '';
+      if (!note) err(`${name}: falta la nota del pago`);
       for (const [url, processor] of [[CAFECITO_URL, 'Cafecito'], [GITHUB_SPONSORS_URL, 'GitHub']]) {
-        if (!url && article.includes(processor)) err(`${name}: nombra ${processor}, que no tiene link`);
+        if (!url && note.includes(processor)) err(`${name}: la nota del pago nombra ${processor}, que no tiene link`);
       }
     }
   }

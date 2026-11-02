@@ -214,9 +214,10 @@ ${p.sections.map((s) => `  <section>\n    <h2>${esc(s.h)}</h2>\n    ${s.p.map((t
 function sponsorPage(c) {
   const p = c.pages.sponsor;
   const fromDir = dirOf(c.lang, 'sponsor');
+  // Un medio sin link sale como «próximamente», igual que las tiendas
   const button = (href, t) => href
     ? `\n      <li><a class="store" href="${esc(href)}" target="_blank" rel="noopener"><span>${esc(t.label)}</span></a><p>${esc(t.note)}</p></li>`
-    : '';
+    : `\n      <li><span class="store" aria-disabled="true"><span>${esc(t.soon)}</span></span><p>${esc(t.note)}</p></li>`;
   const main = `<article class="legal">
   <a class="back" href="${rel(fromDir, dirOf(c.lang, 'home'))}">${esc(c.ui.back)}</a>
   <h1>${esc(p.h1)}</h1>

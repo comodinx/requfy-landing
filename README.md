@@ -36,7 +36,7 @@ En la barra de navegación, antes del selector de idioma: Sistema, Claro y Oscur
 | `SITE_URL` | URL pública con barra final. Agrega `canonical`, `og:url` y `og:image` absoluto |
 | `CUSTOM_DOMAIN` | El dominio propio que sirve GitHub Pages (`requfy.app`). El build lo escribe en `docs/CNAME`: sin eso, cada build borraría el dominio de Pages. `null` para usar `github.io` |
 | `APP_STORE_URL` / `PLAY_STORE_URL` | Con valor, los botones son enlaces; con `null` dicen «Próximamente» |
-| `CAFECITO_URL` / `GITHUB_SPONSORS_URL` | Donaciones, solo en el sitio (nunca dentro de la app). Con `null` en las dos no se genera la página de apoyo (`es/apoyar/`, `en/sponsor/`) ni su link en el pie; alcanza con que una tenga valor para que aparezca, con un botón por cada link configurado. El build lo avisa como opcional |
+| `CAFECITO_URL` / `GITHUB_SPONSORS_URL` | Donaciones, solo en el sitio (nunca dentro de la app). Con `null` en las dos no se genera la página de apoyo (`es/apoyar/`, `en/sponsor/`) ni su link en el pie; alcanza con que una tenga valor para que aparezca. Cada link configurado es un botón, y el que queda en `null` sale como «próximamente», sin link, como las tiendas. El build lo avisa como opcional |
 
 Después de cambiar algo: `npm run build`, `npm run check` y commitear `docs/`.
 

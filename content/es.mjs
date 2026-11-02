@@ -61,8 +61,8 @@ export default {
       h1: 'Apoyar requfy',
       intro: { h: 'Gratis y hecha por una persona', p: ['requfy es gratis y la desarrolla una sola persona. Si te resulta útil, puedes apoyar su desarrollo.', 'Las donaciones son voluntarias y no desbloquean nada en la app.'] },
       waysTitle: 'Cómo apoyar',
-      cafecito: { label: 'Invitar un cafecito', note: 'En pesos, desde Argentina.' },
-      github: { label: 'GitHub Sponsors', note: 'Desde cualquier país, en dólares.' },
+      cafecito: { label: 'Invitar un cafecito', soon: 'Invitar un cafecito (próximamente)', note: 'En pesos, desde Argentina.' },
+      github: { label: 'GitHub Sponsors', soon: 'GitHub Sponsors (próximamente)', note: 'Desde cualquier país, en dólares.' },
       // {processors}: los medios con link en site.config.mjs, unidos con la palabra de `or`
       processorNote: 'El pago lo procesa {processors}: requfy no recibe los datos de tu pago.',
       or: 'o',

@@ -8,5 +8,6 @@ export const APP_STORE_URL = null;
 export const PLAY_STORE_URL = null;
 // Donaciones (solo en el sitio, nunca dentro de la app). Con null en las dos, no se genera
 // la página de apoyo ni su link en el pie; alcanza con que una tenga valor para que aparezca.
+// La que queda en null sale en la página como «próximamente», sin link.
 export const CAFECITO_URL = 'https://cafecito.app/milomolina';
 export const GITHUB_SPONSORS_URL = null;
