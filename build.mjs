@@ -32,7 +32,16 @@ const ICONS = {
   braces: '<path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/>',
   link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
   shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  // Página de apoyo
+  coffee: '<path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/>',
+  heart: '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+  rocket: '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+  sparkles: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  lock: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  external: '<path d="M7 7h10v10"/><path d="M7 17 17 7"/>',
 };
+const icon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONS[name]}</svg>`;
 const APPLE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>';
 const PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 5 3.5z"/></svg>';
 
@@ -210,28 +219,44 @@ ${p.sections.map((s) => `  <section>\n    <h2>${esc(s.h)}</h2>\n    ${s.p.map((t
   return shell(c, key, { title: p.title, description: p.description }, main);
 }
 
-// Página de apoyo: mismo layout que las legales, más un botón por cada link configurado.
+// Página de apoyo: una tarjeta por medio de pago y en qué se usa el apoyo. Un medio sin link sale como «próximamente».
 function sponsorPage(c) {
   const p = c.pages.sponsor;
   const fromDir = dirOf(c.lang, 'sponsor');
-  // Un medio sin link sale como «próximamente», igual que las tiendas
-  const button = (href, t) => href
-    ? `\n      <li><a class="store" href="${esc(href)}" target="_blank" rel="noopener"><span>${esc(t.label)}</span></a><p>${esc(t.note)}</p></li>`
-    : `\n      <li><span class="store" aria-disabled="true"><span>${esc(t.soon)}</span></span><p>${esc(t.note)}</p></li>`;
-  const main = `<article class="legal">
+  const way = (href, t, glyph) => {
+    const action = href
+      ? `<a class="btn" href="${esc(href)}" target="_blank" rel="noopener" data-donation="link"><span>${esc(t.action)}</span>${icon('external')}<span class="sr-only"> (${esc(p.newTab)})</span></a>`
+      : `<span class="btn is-disabled" data-donation="soon">${esc(p.soon)}</span>`;
+    return `      <li class="way${href ? '' : ' is-soon'}">
+        <span class="ico">${icon(glyph)}</span>
+        <h3>${esc(t.name)}</h3>
+        <p>${esc(t.note)}</p>
+        ${action}
+      </li>`;
+  };
+  const processors = [CAFECITO_URL && 'Cafecito', GITHUB_SPONSORS_URL && 'GitHub'].filter(Boolean).join(` ${p.or} `);
+  const main = `<div class="sponsor">
   <a class="back" href="${rel(fromDir, dirOf(c.lang, 'home'))}">${esc(c.ui.back)}</a>
-  <h1>${esc(p.h1)}</h1>
-  <section>
-    <h2>${esc(p.intro.h)}</h2>
-    ${p.intro.p.map((t) => `<p>${esc(t)}</p>`).join('\n    ')}
-  </section>
-  <section>
-    <h2>${esc(p.waysTitle)}</h2>
-    <ul class="stores" style="list-style:none;padding:0;margin:16px 0 0">${button(CAFECITO_URL, p.cafecito)}${button(GITHUB_SPONSORS_URL, p.github)}
+  <header class="sponsor-head">
+    <p class="overline">${esc(p.overline)}</p>
+    <h1>${esc(p.h1)}</h1>
+    <p class="sub">${esc(p.sub)}</p>
+  </header>
+  <section aria-labelledby="ways-title">
+    <h2 id="ways-title" class="sr-only">${esc(p.waysTitle)}</h2>
+    <ul class="ways">
+${way(CAFECITO_URL, p.cafecito, 'coffee')}
+${way(GITHUB_SPONSORS_URL, p.github, 'heart')}
     </ul>
-    <p>${esc(p.processorNote.replace('{processors}', [CAFECITO_URL && 'Cafecito', GITHUB_SPONSORS_URL && 'GitHub'].filter(Boolean).join(` ${p.or} `)))}</p>
+    <p class="processor">${icon('lock')}<span>${esc(p.processorNote.replace('{processors}', processors))}</span></p>
   </section>
-</article>`;
+  <section class="uses-block" aria-labelledby="uses-title">
+    <h2 id="uses-title">${esc(p.usesTitle)}</h2>
+    <ul class="uses">
+${p.uses.map((u) => `      <li class="use"><span class="ico">${icon(u.icon)}</span><div><h3>${esc(u.title)}</h3><p>${esc(u.body)}</p></div></li>`).join('\n')}
+    </ul>
+  </section>
+</div>`;
   return shell(c, 'sponsor', { title: p.title, description: p.description }, main);
 }
 

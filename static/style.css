@@ -29,13 +29,16 @@ body {
   margin: 0; background: var(--bg-base); color: var(--text);
   font-family: 'Fustat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   font-weight: 500; line-height: 1.5;
+  /* El pie queda abajo aunque la página sea corta */
+  min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
 }
+main { flex: 1 0 auto; }
 img, svg { max-width: 100%; }
 a { color: var(--accent-text); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 .skip { position: absolute; left: 16px; top: -100px; background: var(--accent); color: var(--on-accent); padding: 10px 16px; border-radius: 999px; font-weight: 700; z-index: 10; }
 .skip:focus { top: 12px; }
-.wrap { max-width: 1200px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+.wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
 /* El margen crece con la pantalla hasta los 120 de Figma (1500px o más), así 1024–1440 conserva espacio para el hero */
 @media (min-width: 1024px) { :root { --pad: clamp(64px, 8vw, 120px); } .wrap { max-width: 1440px; } }
 
@@ -126,6 +129,46 @@ a.store:hover { opacity: .9; }
 .legal h2 { font-size: 21px; line-height: 28px; font-weight: 700; }
 .legal p { margin: 8px 0 0; font-size: 17px; line-height: 27px; color: var(--text-2); overflow-wrap: anywhere; }
 @media (min-width: 900px) { .legal h1 { font-size: 44px; line-height: 52px; } .legal { padding-left: 0; padding-right: 0; } }
+
+/* Apoyo: el contenido mide hasta 960 y conserva el margen de la nav a los costados */
+.sponsor { max-width: calc(960px + 2 * var(--pad)); margin: 0 auto; padding: 24px var(--pad) 96px; }
+.sponsor .back { display: inline-block; font-size: 16px; font-weight: 600; color: var(--accent-text); text-decoration: none; }
+.sponsor .back:hover { text-decoration: underline; }
+.sponsor-head { margin-top: 40px; max-width: 720px; }
+.sponsor h1 { font-weight: 800; font-size: 38px; line-height: 44px; letter-spacing: -0.015em; text-wrap: balance; }
+.sponsor .sub { margin: 20px 0 0; font-size: 18px; line-height: 28px; color: var(--text-2); max-width: 600px; }
+.ways { display: grid; grid-template-columns: 1fr; gap: 16px; list-style: none; margin: 48px 0 0; padding: 0; }
+.way { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; align-items: flex-start; }
+.way h3 { margin-top: 20px; font-size: 21px; line-height: 28px; font-weight: 700; }
+.way p { margin: 6px 0 28px; font-size: 16px; line-height: 24px; color: var(--text-2); }
+.way.is-soon .ico { background: var(--bg-surface-alt); color: var(--text-muted); }
+/* El botón va al pie de la tarjeta, así las dos quedan alineadas aunque una tenga más texto */
+.btn { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: 16px; font-weight: 700; text-decoration: none; }
+.btn svg { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+a.btn:hover { opacity: .92; }
+.btn.is-disabled { background: transparent; color: var(--text-muted); border: 1.5px dashed color-mix(in srgb, var(--text-muted) 55%, transparent); cursor: default; }
+.processor { display: flex; align-items: flex-start; gap: 8px; margin: 20px 0 0; font-size: 15px; line-height: 22px; color: var(--text-2); }
+.processor svg { width: 16px; height: 16px; flex: none; margin-top: 3px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.uses-block { margin-top: 72px; padding-top: 56px; border-top: 1px solid var(--border); }
+.uses-block h2 { font-weight: 800; font-size: 26px; line-height: 32px; letter-spacing: -0.01em; }
+.uses { display: grid; grid-template-columns: 1fr; gap: 28px; list-style: none; margin: 32px 0 0; padding: 0; }
+.use { display: flex; gap: 16px; align-items: flex-start; }
+.use .ico { flex: none; }
+.use h3 { margin-top: 10px; font-size: 17px; line-height: 24px; font-weight: 700; }
+.use p { margin: 4px 0 0; font-size: 16px; line-height: 24px; color: var(--text-2); }
+@media (min-width: 640px) { .ways { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+@media (min-width: 900px) {
+  .sponsor { padding-top: 32px; padding-bottom: 120px; }
+  .sponsor-head { margin-top: 48px; }
+  .sponsor h1 { font-size: 52px; line-height: 58px; }
+  .sponsor .sub { font-size: 20px; line-height: 31px; }
+  .ways { margin-top: 56px; }
+  .way { padding: 32px; }
+  .uses { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .use { flex-direction: column; }
+  .use h3 { margin-top: 0; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 /* Footer */
 .footer { border-top: 1px solid var(--border); margin-top: 0; }

@@ -87,14 +87,27 @@ for (const f of html) {
     const footerLink = new RegExp(`<footer[\\s\\S]*href="${own ? '\\./' : `[^"]*${slug}/`}"`).test(src);
     if (footerLink !== SPONSOR_ON) err(`${name}: el link de apoyo del pie ${SPONSOR_ON ? 'falta' : 'sobra'}`);
     if (name === `${top}/${slug}/index.html`) {
-      const ext = [...src.matchAll(/<a class="store" href="https:[^>]*>/g)].map((m) => m[0]);
+      const ext = [...src.matchAll(/<a [^>]*data-donation="link"[^>]*>/g)].map((m) => m[0]);
       if (ext.length !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter(Boolean).length) err(`${name}: cantidad de botones de donación incorrecta`);
-      for (const a of ext) if (!/rel="noopener"/.test(a)) err(`${name}: botón externo sin rel="noopener"`);
-      // Un medio sin link se muestra como «próximamente», sin link, como las tiendas
-      const soon = (src.match(/<span class="store" aria-disabled="true">/g) || []).length;
+      for (const a of ext) {
+        if (!/href="https:/.test(a)) err(`${name}: botón de donación sin link https`);
+        if (!/rel="noopener"/.test(a)) err(`${name}: botón externo sin rel="noopener"`);
+      }
+      // Cada link configurado está en su botón, y su medio aparece en la nota del pago
+      const noteText = src.match(/<p class="processor">[\s\S]*?<span>([^<]*)<\/span><\/p>/)?.[1] ?? '';
+      for (const [url, processor] of [[CAFECITO_URL, 'Cafecito'], [GITHUB_SPONSORS_URL, 'GitHub']]) {
+        if (!url) continue;
+        const href = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+        if (!ext.some((a) => a.includes(`href="${href}"`))) err(`${name}: falta el botón con el link de ${processor}`);
+        if (!noteText.includes(processor)) err(`${name}: la nota del pago no nombra ${processor}`);
+      }
+      // Un medio sin link se muestra como «próximamente», sin link
+      const soon = (src.match(/<span [^>]*data-donation="soon"[^>]*>/g) || []).length;
       if (soon !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter((url) => !url).length) err(`${name}: cantidad de medios «próximamente» incorrecta`);
+      // En qué se usa el apoyo: tres puntos
+      if ((src.match(/<li class="use">/g) || []).length !== 3) err(`${name}: faltan los puntos de «en qué se usa»`);
       // La nota del pago no nombra un medio que no tiene link
-      const note = src.match(/<\/ul>\s*<p>([^<]*)<\/p>/)?.[1] ?? '';
+      const note = src.match(/<p class="processor">[\s\S]*?<span>([^<]*)<\/span><\/p>/)?.[1] ?? '';
       if (!note) err(`${name}: falta la nota del pago`);
       for (const [url, processor] of [[CAFECITO_URL, 'Cafecito'], [GITHUB_SPONSORS_URL, 'GitHub']]) {
         if (!url && note.includes(processor)) err(`${name}: la nota del pago nombra ${processor}, que no tiene link`);
