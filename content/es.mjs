@@ -63,7 +63,9 @@ export default {
       waysTitle: 'Cómo apoyar',
       cafecito: { label: 'Invitar un cafecito', note: 'En pesos, desde Argentina.' },
       github: { label: 'GitHub Sponsors', note: 'Desde cualquier país, en dólares.' },
-      processorNote: 'El pago lo procesa Cafecito o GitHub: requfy no recibe los datos de tu pago.',
+      // {processors}: los medios con link en site.config.mjs, unidos con la palabra de `or`
+      processorNote: 'El pago lo procesa {processors}: requfy no recibe los datos de tu pago.',
+      or: 'o',
     },
     privacy: {
       title: 'Política de privacidad — requfy',

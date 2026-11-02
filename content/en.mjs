@@ -61,7 +61,8 @@ export default {
       waysTitle: 'How to support',
       cafecito: { label: 'Buy me a cafecito', note: 'In pesos, from Argentina.' },
       github: { label: 'GitHub Sponsors', note: 'From any country, in dollars.' },
-      processorNote: "The payment is processed by Cafecito or GitHub: requfy doesn't receive your payment details.",
+      processorNote: "The payment is processed by {processors}: requfy doesn't receive your payment details.",
+      or: 'or',
     },
     privacy: {
       title: 'Privacy policy — requfy',

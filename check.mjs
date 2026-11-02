@@ -90,6 +90,11 @@ for (const f of html) {
       const ext = [...src.matchAll(/<a class="store" href="https:[^>]*>/g)].map((m) => m[0]);
       if (ext.length !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter(Boolean).length) err(`${name}: cantidad de botones de donación incorrecta`);
       for (const a of ext) if (!/rel="noopener"/.test(a)) err(`${name}: botón externo sin rel="noopener"`);
+      // La página no nombra un medio de pago que no está configurado
+      const article = src.match(/<article[\s\S]*<\/article>/)?.[0] ?? '';
+      for (const [url, processor] of [[CAFECITO_URL, 'Cafecito'], [GITHUB_SPONSORS_URL, 'GitHub']]) {
+        if (!url && article.includes(processor)) err(`${name}: nombra ${processor}, que no tiene link`);
+      }
     }
   }
 

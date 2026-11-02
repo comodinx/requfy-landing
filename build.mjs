@@ -228,7 +228,7 @@ function sponsorPage(c) {
     <h2>${esc(p.waysTitle)}</h2>
     <ul class="stores" style="list-style:none;padding:0;margin:16px 0 0">${button(CAFECITO_URL, p.cafecito)}${button(GITHUB_SPONSORS_URL, p.github)}
     </ul>
-    <p>${esc(p.processorNote)}</p>
+    <p>${esc(p.processorNote.replace('{processors}', [CAFECITO_URL && 'Cafecito', GITHUB_SPONSORS_URL && 'GitHub'].filter(Boolean).join(` ${p.or} `)))}</p>
   </section>
 </article>`;
   return shell(c, 'sponsor', { title: p.title, description: p.description }, main);
