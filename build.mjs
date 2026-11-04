@@ -213,7 +213,7 @@ function legalPage(c, key) {
   const main = `<article class="legal">
   <a class="back" href="${rel(fromDir, dirOf(c.lang, 'home'))}">${esc(c.ui.back)}</a>
   <h1>${esc(p.h1)}</h1>
-  <p class="updated">${esc(c.ui.updated)}</p>
+  <p class="updated">${esc(p.updated ?? c.ui.updated)}</p>
 ${p.sections.map((s) => `  <section>\n    <h2>${esc(s.h)}</h2>\n    ${s.p.map((t) => paragraph(t, c, fromDir)).join('\n    ')}\n  </section>`).join('\n')}
 </article>`;
   return shell(c, key, { title: p.title, description: p.description }, main);
