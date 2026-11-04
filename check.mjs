@@ -81,11 +81,15 @@ for (const f of html) {
 
   // Apoyo: el link del pie solo existe con la página, y los botones son externos con rel="noopener".
   if (top === 'es' || top === 'en') {
-    const slug = (top === 'es' ? es : en).slugs.sponsor;
+    const slugs = (top === 'es' ? es : en).slugs;
+    const slug = slugs.sponsor;
     // En la propia página de apoyo el link del pie es relativo a sí misma («./»)
     const own = name === `${top}/${slug}/index.html`;
+    // Las páginas legales no lo llevan: la app las abre, y Apple 3.1.1 no deja dirigir a donaciones desde la app
+    const legal = ['privacy', 'terms', 'support', 'delete'].some((k) => name === `${top}/${slugs[k]}/index.html`);
     const footerLink = new RegExp(`<footer[\\s\\S]*href="${own ? '\\./' : `[^"]*${slug}/`}"`).test(src);
-    if (footerLink !== SPONSOR_ON) err(`${name}: el link de apoyo del pie ${SPONSOR_ON ? 'falta' : 'sobra'}`);
+    const expected = SPONSOR_ON && !legal;
+    if (footerLink !== expected) err(`${name}: el link de apoyo del pie ${expected ? 'falta' : 'sobra'}`);
     if (name === `${top}/${slug}/index.html`) {
       const ext = [...src.matchAll(/<a [^>]*data-donation="link"[^>]*>/g)].map((m) => m[0]);
       if (ext.length !== [CAFECITO_URL, GITHUB_SPONSORS_URL].filter(Boolean).length) err(`${name}: cantidad de botones de donación incorrecta`);

@@ -139,6 +139,9 @@ function nav(c, fromDir, key) {
 
 function footer(c, fromDir, key) {
   const other = c.lang === 'es' ? 'en' : 'es';
+  // Las páginas legales no enlazan las donaciones: la app abre la privacidad y los términos,
+  // y Apple 3.1.1 no deja dirigir a donaciones desde la app
+  const sponsorLink = SPONSOR_ON && !PAGE_KEYS.includes(key);
   return `<footer class="footer">
   <div class="wrap">
     <p>${esc(c.copyright)}</p>
@@ -146,7 +149,7 @@ function footer(c, fromDir, key) {
       <li><a href="${rel(fromDir, dirOf(c.lang, 'privacy'))}">${esc(c.ui.privacy)}</a></li>
       <li><a href="${rel(fromDir, dirOf(c.lang, 'terms'))}">${esc(c.ui.terms)}</a></li>
       <li><a href="${rel(fromDir, dirOf(c.lang, 'support'))}">${esc(c.ui.support)}</a></li>
-      <li><a href="${rel(fromDir, dirOf(c.lang, 'delete'))}">${esc(c.ui.deleteAccount)}</a></li>${SPONSOR_ON ? `\n      <li><a href="${rel(fromDir, dirOf(c.lang, 'sponsor'))}">${esc(c.ui.sponsor)}</a></li>` : ''}
+      <li><a href="${rel(fromDir, dirOf(c.lang, 'delete'))}">${esc(c.ui.deleteAccount)}</a></li>${sponsorLink ? `\n      <li><a href="${rel(fromDir, dirOf(c.lang, 'sponsor'))}">${esc(c.ui.sponsor)}</a></li>` : ''}
       <li><a class="lang" href="${rel(fromDir, dirOf(other, key))}" lang="${other}" hreflang="${other}">${esc(c.ui.otherLang)}</a></li>
     </ul></nav>
   </div>
